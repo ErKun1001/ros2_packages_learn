@@ -194,6 +194,13 @@
       <axis xyz="0 1 0" />
   </joint>
 
+  <link name="ultrasonic_sensor_link" />
+
+  <joint name="ultrasonic_sensor_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ultrasonic_sensor_link"/>
+    <origin xyz="0.07 0.0 0.076" rpy="0 0 0"/>
+  </joint>
 
 
   <gazebo reference="caster_link">
@@ -357,5 +364,57 @@
       </plugin>
       </sensor>
     </gazebo>
+    
+  <gazebo reference="ultrasonic_sensor_link">
+    <sensor type="ray" name="ultrasonic_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <!-- 是否可视化，gazebo里能不能看到 -->
+      <visualize>true</visualize>
+      <!-- 扫描速率，也就是数据更新速率 -->
+      <update_rate>5</update_rate>
+      <ray>
+        <scan>
+          <!-- 水平扫描的点数 -->
+          <horizontal>
+            <samples>5</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.12</min_angle>
+            <max_angle>0.12</max_angle>
+          </horizontal>
+          <!-- 垂直方向扫描的点数 -->
+          <vertical>
+            <samples>5</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.01</min_angle>
+            <max_angle>0.01</max_angle>
+          </vertical>
+        </scan>
+        <!-- 超声波检测的范围和数据分辨率单位m -->
+        <range>
+          <min>0.02</min>
+          <max>4</max>
+          <resolution>0.01</resolution>
+        </range>
+        <!-- 数据噪声采用高斯噪声 -->
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="ultrasonic_sensor_controller" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <!-- 重映射输出的话题名称 -->
+          <remapping>~/out:=ultrasonic_sensor_1</remapping>
+        </ros>
+        <!-- 输出消息的类型，注意与雷达区分，这里是sensor_msgs/Range -->
+        <output_type>sensor_msgs/Range</output_type>
+        <!-- 射线类型，这里要写ultrasound，注意和雷达区分 -->
+        <radiation_type>ultrasound</radiation_type>
+        <!-- frame名称，填写link名称即可 -->
+        <frame_name>ultrasonic_sensor_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
 
 </robot>

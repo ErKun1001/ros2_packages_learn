@@ -51,4 +51,13 @@
 
 - urdf_py 
 
-        ros2的urdf建模和gazebo仿真测试
+        ros2的urdf建模和gazebo仿真测试 world建立
+
+- cartographer/cartographer_ros
+
+        这是git下载的cartographer slam建图库
+
+- fishbot_cartographer
+
+        这是参考鱼香ros 测试slam建图 gazebo仿真遥控车移动 rviz显示建立的slam地图
+

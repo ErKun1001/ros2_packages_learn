@@ -1,0 +1,5 @@
+#忽略git上clone的cartographer
+cartographer/
+
+#忽略git上clone的cartographer_ros
+cartographer_ros/
